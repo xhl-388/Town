@@ -114,6 +114,3 @@ MonoBehaviour:
   decalHitWall: {fileID: 179232, guid: b2ac1383a96f94a50b7ed458be173bbd, type: 3}
   floatInfrontOfWall: 0.1
   bloodEffect: {fileID: 1013274939826982, guid: ffbf169ab9dcfdc45ae14010bc82a6b2, type: 3}
-  ignoreLayer:
-    serializedVersion: 2
-    m_Bits: 768
