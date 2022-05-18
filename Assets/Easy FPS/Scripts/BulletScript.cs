@@ -1,6 +1,5 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
+
 
 public class BulletScript : MonoBehaviour {
 
@@ -28,7 +27,6 @@ public class BulletScript : MonoBehaviour {
 	* If raycast finds somethig it will create a decal of corresponding tag.
 	*/
 	void Update () {
-
 		if(Physics.Raycast(transform.position, transform.forward,out _hitInfo, maxDistance, ~_ignoreLayer)){
 			if(decalHitWall){
 				if(_hitInfo.transform.CompareTag("Untagged")){
@@ -44,5 +42,4 @@ public class BulletScript : MonoBehaviour {
 		}
 		Destroy(gameObject, 0.1f);
 	}
-
 }
