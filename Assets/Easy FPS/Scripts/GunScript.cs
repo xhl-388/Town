@@ -17,6 +17,9 @@ public class GunScript : MonoBehaviour {
 	[Tooltip("Speed is determined via gun because not every gun has same properties or weights so you MUST set up your speeds here")]
 	public int runningSpeed = 5;
 
+	[Tooltip("Speed is determined via gun because not every gun has same properties or weights so you MUST set up your speeds here")]
+	public int croughingSpeed = 2;
+
 
 	[Header("Bullet properties")]
 	[Tooltip("Preset value to tell with how many bullets will our waepon spawn aside.")]
@@ -191,6 +194,9 @@ public class GunScript : MonoBehaviour {
 				} else {
 					pmS.maxSpeed = walkingSpeed;
 				}
+			}else if (Input.GetKeyDown(KeyCode.C))
+			{
+				pmS.maxSpeed = croughingSpeed;
 			}
 		} else {
 			pmS.maxSpeed = walkingSpeed;
@@ -478,7 +484,7 @@ public class GunScript : MonoBehaviour {
 
 
 			yield return new WaitForSeconds (reloadChangeBulletsTime - 0.5f);//minus ovo vrijeme cekanja na yield
-			if (meeleAttack == false && pmS.maxSpeed != runningSpeed) {
+			if (!meeleAttack&& pmS.maxSpeed != runningSpeed) {
 				//print ("tu sam");
 				if (player.GetComponent<PlayerMovementScript> ()._freakingZombiesSound)
 					player.GetComponent<PlayerMovementScript> ()._freakingZombiesSound.Play ();

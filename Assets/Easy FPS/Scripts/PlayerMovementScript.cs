@@ -20,6 +20,9 @@ public class PlayerMovementScript : MonoBehaviour
     [Tooltip("Position of the camera inside the player")] [HideInInspector]
     public Vector3 cameraPosition;
 
+    [SerializeField]
+    private bool isGrounded;
+
     /*
      * Getting the Players rigidbody component.
      * And grabbing the mainCamera from Players child transform.
@@ -41,9 +44,24 @@ public class PlayerMovementScript : MonoBehaviour
     */
     void FixedUpdate()
     {
+        CheckForGrounded();
+        
         RaycastForMeleeAttacks();
 
         PlayerMovementLogic();
+    }
+
+    private void CheckForGrounded()
+    {
+        RaycastHit groundedInfo;
+        const float maxDistance = 1.1f;
+        if (Physics.Raycast(transform.position, transform.up * -1f, out groundedInfo, maxDistance, ~_ignoreLayer))
+        {
+            isGrounded = groundedInfo.transform != null;
+        }
+        else
+            isGrounded = false;
+        Debug.DrawRay(transform.position, transform.up * -1 *maxDistance, Color.red);
     }
 
     /*
@@ -134,7 +152,7 @@ public class PlayerMovementScript : MonoBehaviour
     {
         if (_walkSound && _runSound)
         {
-            if (RayCastGrounded())
+            if (isGrounded)
             {
                 //for walk sounsd using this because suraface is not straigh			
                 if (currentSpeed > 1)
@@ -180,37 +198,11 @@ public class PlayerMovementScript : MonoBehaviour
     }
 
     /*
-    * Raycasts down to check if we are grounded along the gorunded method() because if the
-    * floor is curvy it will go ON/OFF constatly this assures us if we are really grounded
-    */
-    private bool RayCastGrounded()
-    {
-        RaycastHit groundedInfo;
-        if (Physics.Raycast(transform.position, transform.up * -1f, out groundedInfo, 1, ~_ignoreLayer))
-        {
-            Debug.DrawRay(transform.position, transform.up * -1f, Color.red, 0.0f);
-            if (groundedInfo.transform != null)
-            {
-                //print ("vracam true");
-                return true;
-            }
-            else
-            {
-                //print ("vracam false");
-                return false;
-            }
-        }
-        //print ("nisam if dosao");
-
-        return false;
-    }
-
-    /*
     * If player toggle the crouch it will scale the player to appear that is crouching
     */
     void Crouching()
     {
-        if (Input.GetKey(KeyCode.C))
+        if (Input.GetKey(KeyCode.C)&&isGrounded)
         {
             transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 0.6f, 1), Time.deltaTime * 15);
         }
